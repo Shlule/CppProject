@@ -1,0 +1,24 @@
+ precision mediump float;
+
+ void mainImage(out vec4 fragColor, in vec2 fragCoord){
+     vec2 st = fragCoord.xy/iResolution.xy;
+     st.x *= iResolution.x/iResolution.y;
+
+     vec3 color = vec3(0.0);
+     float d=0.0;
+
+     //remap the space to -1 to 1
+     st =st*2.0-1.0;
+
+     // make the ditance field
+     d=length(abs(st)-0.5);
+     //d= length(min(abs(st)-0.5,0.0));
+     //d =length(max(abs(st)-0.5,0.0));
+
+
+     //visualize the distance field
+     fragColor = vec4(vec3(fract(d*10.0)),1.0);
+     fragColor = vec4(vec3(step(0.3,d)),1.0);
+     fragColor = vec4(vec3(step(0.3,d)*step(d,0.4)),1.0);
+     fragColor =vec4(vec3(smoothstep(0.38,0.4,d)*smoothstep(0.52,0.5,d)),1.0);
+ }

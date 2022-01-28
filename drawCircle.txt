@@ -1,0 +1,14 @@
+
+precision mediump float;
+
+void mainImage(out vec4 fragColor, in vec2 fragCoord){
+    vec2 st = fragCoord.xy/iResolution.xy;
+    float pct =0.0;
+
+    vec2 toCenter = vec2(0.5)-st;
+    pct = 1.0-smoothstep(length(toCenter),sin(iTime)*0.25+0.25,sin(iTime)*0.25+0.25-0.01);
+    pct += 1.0-smoothstep(length(toCenter),sin(iTime)*0.25+0.25,sin(iTime)*0.25+0.25+0.01);
+
+    vec3 color = vec3(pct)*vec3(1.0,cos(iTime),sin(iTime));
+    fragColor = vec4(color,1.0);
+}

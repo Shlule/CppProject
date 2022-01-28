@@ -1,0 +1,31 @@
+precision mediump float;
+
+void mainImage(out vec4 fragColor, in vec2 fragCoord){
+    vec2 st = fragCoord.xy/iResolution.xy;
+    vec3 color = vec3(0.0);
+
+    float pct = 0.0;
+    //float constante = 3.0;
+    //pct = distance(st*constante,vec2(0.5*constante));
+
+    vec2 toCenter = vec2 (0.5)-st;
+    //pct = 1.0-smoothstep(length(toCenter),sin(iTime*1.5)*0.25+0.25,sin(iTime*1.5)*0.25+0.25-0.01);
+    //pct += 1.0-smoothstep(length(toCenter),sin(iTime*1.5)*0.25+0.25,sin(iTime*1.5)*0.25+0.25+0.01);
+
+
+    //pct = min(distance(st,vec2(0.4)),distance(st,vec2(0.6)))*2.0;
+    //pct = max(distance(st,vec2(0.4)),distance(st,vec2(0.6)))*2.0;
+    pct = pow(distance(st,vec2(0.4)),distance(st,vec2(0.6)));
+
+
+    //c. The SQUARE ROOT of the vector
+    //from the pixel to the center
+
+    vec2 tC = vec2(0.5)-st;
+   // pct = sqrt(tC.x*tC.x+tC.y*tC.y);
+
+
+    color=vec3(pct);
+
+    fragColor =vec4(color,1.0);
+}

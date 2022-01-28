@@ -1,0 +1,26 @@
+
+
+
+precision mediump float;
+
+#define PI 3.14159265359
+vec3 colorA(0.149,0.141,0.912);
+
+float plot(vec2 st, float pct){
+    return smoothstep(pct-0.02, pct,st.y)-
+           smoothstep(pct,pct+0.02,st.y);
+}
+
+void mainImage( out vec4 fragColor, in vec2 fragCoord ) {
+
+	  vec3 color = vec3(0.0);
+
+    float pct = abs(sin(iTime));
+
+    //mix uses pct(a value from 0,1)to
+    //mix the two colors
+
+    color =mix (colorA,colorB, pct);
+    fragColor = vec4(color,1.0);
+
+}

@@ -1,0 +1,49 @@
+// for this i want to try mouse interaction with the shader
+
+
+precision mediump float;
+
+#define Iteration 20
+#define zoom 0.850
+
+void mainImage(out vec4 fragColor, in vec2 fragCoord){
+    vec2 uv = fragCoord.xy/iResolution.xy;
+    uv.y*=iResolution.y/iResolution.x;
+    vec3 dir = vec3(uv*zoom,1.0);
+
+    // add mouse feature
+    float a1 = 0.2+iMouse.x/iResolution.x;
+    uv*=a1;
+
+
+    // add zoom as you want
+    //uv*= sin(iGlobalTime*0.15)+0.2;
+
+    vec2 c = vec2(0.5,1.1);
+    float result=0.0;
+    float previousResult =0.0;
+    float amplitude =0.0;
+
+    for(int i =0; i<Iteration;i++){
+
+        uv = abs(uv)/dot(uv,uv)-c;
+         previousResult = result;
+         result += length(uv);
+
+         amplitude += abs(result-previousResult);
+
+    }
+    amplitude /= float(Iteration);//*20.;
+
+    amplitude += iGlobalTime*0.08;
+
+    //vec3 color= vec3(0.5/fract(amplitude),0.8/fract(amplitude),0.2*fract(amplitude));
+    
+    vec3 myColor = vec3(0.2,0.21,0.52);
+    vec3 color = vec3(fract(amplitude+myColor));
+
+    //vec3 color = vec3(fract(amplitude/myColor));
+
+    fragColor= vec4(color,1.0);
+
+}

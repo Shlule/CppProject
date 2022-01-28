@@ -1,0 +1,31 @@
+precision mediump float;
+
+float box(in vec2 stP, in vec2 sizeP){
+    sizeP = vec2(0.5)-sizeP*0.5;
+    vec2 uv = smoothstep(sizeP,sizeP+vec2(0.001),stP);
+    uv*= smoothstep(sizeP,sizeP+vec2(0.001), vec2(1.0)-stP);
+
+    return uv.x*uv.y;
+}
+
+float cross(in vec2 stP, float sizeP){
+    return box(stP,vec2(sizeP,sizeP/4.0))+
+           box(stP,vec2(sizeP/4.0,sizeP));
+}
+
+void mainImage(out vec4 fragColor, in vec2 fragCoord){
+    vec2 st = fragCoord.xy/iResolution.xy;
+    vec3 color = vec3(0.0);
+
+    //to move the cross we move the space
+    vec2 translate = vec2(cos(iTime),sin(iTime));
+    st+=translate*0.35;
+
+    //show the coordinate of the space on the background
+    color = vec3(st.x,st.y,0.0);
+
+    // add the shape on the foreground
+    color+= vec3(cross(st,0.25));
+
+    fragColor= vec4(color,1.0);
+}

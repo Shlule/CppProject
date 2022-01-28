@@ -1,0 +1,31 @@
+// now i want to add animated color on my kaliset base form.
+
+
+precision mediump float;
+
+#define Iteration 20
+
+void mainImage(out vec4 fragColor, in vec2 fragCoord){
+    vec2 uv = fragCoord.xy/iResolution.xy;
+    uv.y*=iResolution.y/iResolution.x;
+
+
+    // i create my baseForm kaliset
+    float result =0.0;
+    vec2 c = vec2(0.5,1.1);
+    
+    for(int i=0; i<Iteration;i++){
+        uv = abs(uv)/dot(uv,uv)-c;
+        result = length(uv);
+    }
+
+    // create pseudo irregular animation for color.
+    float time = fract(iGlobalTime*0.2);
+    vec3 color= vec3(0.2+time,0.5*time,0.12/time);
+
+    // now mix the kaliset and color.
+
+    color+=result;
+
+    fragColor= vec4(color,1.0);
+}

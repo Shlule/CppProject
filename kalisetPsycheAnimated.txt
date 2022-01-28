@@ -1,0 +1,33 @@
+// in the kaliset plus color shader it doesn't match with my attemp
+// i want that color  don't be uniform but moving in the shape
+
+precision mediump float;
+
+#define Iteration 20
+
+void mainImage(out vec4 fragColor, in vec2 fragCoord){
+    vec2 uv = fragCoord.xy/iResolution.xy;
+    uv.y*=iResolution.y/iResolution.x;
+
+    float result = 0.0;
+    vec2 c = vec2(0.5,1.1);
+    float previousResult =0.0;
+    float amplitude =0.0;
+
+    for(int i=0;i<Iteration;i++){
+        uv = abs(uv)/dot(uv,uv)-c;
+        
+        previousResult = result;
+        result = length(uv);
+
+        amplitude += abs(result - previousResult); 
+
+    }
+    // calcule la moyenne de amplitude.
+    amplitude /= float(Iteration);
+
+    float time = amplitude+iGlobalTime*0.2;
+   
+
+    fragColor= vec4(vec3(fract(time)),1.0);
+}
